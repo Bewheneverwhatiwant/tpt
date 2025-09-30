@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Image from 'next/image';
+import Image from "next/image";
 
 import { useAuthStore } from "../stores/authStore";
 import { useRouter } from "next/navigation";
@@ -39,13 +39,13 @@ export default function Login() {
 			username: userId,
 			password: password,
 			rememberMe: checked,
-		}
+		};
 
 		const result = await login(loginData);
 		console.log("전송된 로그인 데이터:", loginData);
 
 		if (result.success) {
-			setAuthLogin({ username: userId }); // 전역 상태 갱신 
+			setAuthLogin({ username: userId }); // 전역 상태 갱신
 			router.push("/");
 		} else {
 			console.log("로그인 실패:", result);
@@ -76,8 +76,6 @@ export default function Login() {
 		}
 	};
 
-
-
 	const handleKakaoLogin = () => {
 		window.location.href = kakaoLoginUrl;
 	};
@@ -93,11 +91,21 @@ export default function Login() {
 	const isLoginEnabled = !!(userId && password) && !isLoading;
 
 	return (
-		<div className="w-full min-h-screen bg-gray-100">
-			<main id="main-content" className="pt-16 w-full h-screen flex items-center justify-center bg-gray-100">
-				<form className="w-md p-6 bg-white shadow-md rounded-md flex flex-col gap-20" onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
-					<div className="w-full flex flex-col gap-10 items-center">
-						{/* <h1 className="text-xl font-semibold text-center text-gray-900">로그인</h1> */}
+		<div className="w-full min-h-screen bg-gray-100 flex items-center justify-center">
+			<main className="w-full pt-16 flex items-center justify-center bg-gray-100 px-4 sm:px-6">
+				<form
+					className="
+            w-full max-w-sm sm:max-w-md md:max-w-lg 
+            bg-white shadow-md rounded-md 
+            flex flex-col gap-10 sm:gap-12 md:gap-14 
+            p-6 sm:p-8 md:p-10
+          "
+					onSubmit={(e) => {
+						e.preventDefault();
+						handleLogin();
+					}}
+				>
+					<div className="w-full flex flex-col gap-6 items-center">
 						<div className="w-full flex justify-center items-center">
 							<Image
 								src="/images/logo_main.png"
@@ -118,7 +126,6 @@ export default function Login() {
 								variant={2}
 								required
 								autoComplete="username"
-								aria-describedby="userId-help"
 							/>
 							<CustomInputField
 								id="password"
@@ -130,22 +137,18 @@ export default function Login() {
 								type="password"
 								required
 								autoComplete="current-password"
-								aria-describedby="password-help"
 							/>
 						</div>
 
 						{/* 회원가입 링크 */}
-						<div className="text-center">
-							<span className="text-sm text-gray-600">첫 방문이신가요? </span>
-							<CustomButton
-								variant="onlyText"
-								onClick={handleSignupNavigation}
-							>
+						<div className="text-center text-sm sm:text-base">
+							<span className="text-gray-600">첫 방문이신가요? </span>
+							<CustomButton variant="onlyText" onClick={handleSignupNavigation}>
 								회원가입
 							</CustomButton>
 						</div>
 
-						<div className="flex justify-center gap-4 text-sm">
+						<div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-6 text-sm">
 							<button
 								type="button"
 								onClick={() => setFindIdModalOpen(true)}
@@ -168,7 +171,6 @@ export default function Login() {
 								width="w-full"
 								variant="prettyFull"
 								disabled={!isLoginEnabled}
-								aria-describedby="login-status"
 							>
 								{isLoading ? "로그인 중..." : "로그인"}
 							</CustomButton>
@@ -184,7 +186,7 @@ export default function Login() {
 					{/* 소셜 로그인 */}
 					<div className="flex flex-col gap-2">
 						<CustomButton
-							className="bg-yellow-300 text-black px-2 py-1 rounded-lg focus:outline-none"
+							className="bg-yellow-300 text-black px-2 py-2 rounded-lg"
 							onClick={handleKakaoLogin}
 							disabled={isLoading}
 						>
@@ -207,12 +209,13 @@ export default function Login() {
 							isOpen={showErrorModal}
 							onClose={() => setShowErrorModal(false)}
 							variant={2}
-							width="max-w-2xl"
+							width="max-w-sm sm:max-w-md md:max-w-lg"
 						>
 							<div className="p-4 text-center">
 								<h3 className="text-lg font-semibold mb-2">알림</h3>
-								{/* <p className="text-gray-700 mb-4">{error}</p> */}
-								<p className="text-gray-700 mb-4">아이디 또는 비밀번호가 일치하지 않습니다.</p>
+								<p className="text-gray-700 mb-4">
+									아이디 또는 비밀번호가 일치하지 않습니다.
+								</p>
 							</div>
 						</CustomModal>
 					)}
@@ -227,10 +230,9 @@ export default function Login() {
 								setFoundId(null);
 							}}
 							variant={1}
-							width="w-lg"
+							width="max-w-sm sm:max-w-md md:max-w-lg"
 						>
 							<div className="p-6 flex flex-col gap-4">
-
 								<CustomInputField
 									variant={0}
 									id="findIdEmail"
@@ -252,9 +254,7 @@ export default function Login() {
 								</CustomButton>
 
 								{foundId && (
-									<p className="text-center text-gray-700 mt-2">
-										{foundId}
-									</p>
+									<p className="text-center text-gray-700 mt-2">{foundId}</p>
 								)}
 							</div>
 						</CustomModal>
