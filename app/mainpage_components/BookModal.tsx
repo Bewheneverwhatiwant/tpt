@@ -13,7 +13,7 @@ type TimeSlot = {
 };
 
 type ReservationProps = {
-	onClose: () => void;  // 부모가 내려줄 닫기 함수
+	onClose: () => void; // 부모가 내려줄 닫기 함수
 };
 
 export default function Reservation({ onClose }: ReservationProps) {
@@ -31,7 +31,7 @@ export default function Reservation({ onClose }: ReservationProps) {
 	const back = () => {
 		setIsModalOpen(false);
 		router.push("/");
-	}
+	};
 
 	// mockData (추후 API 대체 예정)
 	const mockTimes: TimeSlot[] = [
@@ -47,7 +47,6 @@ export default function Reservation({ onClose }: ReservationProps) {
 	];
 
 	useEffect(() => {
-		// fetch("/api/times?date=...")
 		setTimeSlots(mockTimes);
 	}, []);
 
@@ -62,8 +61,9 @@ export default function Reservation({ onClose }: ReservationProps) {
 	};
 
 	return (
-		<div className="flex flex-col max-w-2xl mx-auto p-6 gap-20">
-			<div className="flex flex-col w-full gap-5">
+		<div className="flex flex-col max-w-2xl mx-auto p-4 sm:p-6 gap-10 sm:gap-20">
+			{/* 상단 타이틀 */}
+			<div className="flex flex-col w-full gap-5 relative">
 				<div className="flex gap-3 w-full items-center justify-center">
 					<Image
 						src="/images/logo_main.png"
@@ -72,12 +72,14 @@ export default function Reservation({ onClose }: ReservationProps) {
 						height={30}
 						className="object-contain"
 					/>
-					<h3 className="text-2xl font-bold">상담 예약</h3>
+					<h3 className="text-xl sm:text-2xl font-bold text-gray-900">
+						상담 예약
+					</h3>
 
 					{/* 닫기 버튼 */}
 					<button
 						onClick={onClose}
-						className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 cursor-pointer"
+						className="absolute top-0 right-0 text-gray-500 hover:text-gray-700 cursor-pointer"
 					>
 						✕
 					</button>
@@ -85,9 +87,11 @@ export default function Reservation({ onClose }: ReservationProps) {
 				<CustomDivider />
 
 				{/* 날짜 선택 */}
-				<h4 className="text-2xl mt-10 mb-2">1. 상담 날짜를 선택해주세요.</h4>
+				<h4 className="text-lg sm:text-2xl mt-6 sm:mt-10 mb-2 font-semibold text-gray-900">
+					1. 상담 날짜를 선택해주세요.
+				</h4>
 				<div className="flex flex-col items-start gap-6 mb-6">
-					<div>
+					<div className="w-full">
 						<Calendar
 							onChange={(date) => {
 								setSelectedDate(date as Date);
@@ -95,37 +99,41 @@ export default function Reservation({ onClose }: ReservationProps) {
 							}}
 							value={selectedDate}
 							minDate={new Date()}
-							className="rounded-md"
+							className="rounded-md w-full"
 						/>
 					</div>
 					<div>
-						<p className="text-sm text-gray-600">선택하신 날짜:</p>
-						<p className="text-lg">
+						<p className="text-sm text-gray-800 md:text-gray-600 font-medium md:font-normal">
+							선택하신 날짜:
+						</p>
+						<p className="text-base sm:text-lg text-gray-900 md:text-gray-700 font-semibold md:font-normal">
 							{selectedDate ? formatDate(selectedDate) : "날짜를 선택해주세요."}
 						</p>
 					</div>
 				</div>
 			</div>
 
+			{/* 시간 선택 */}
 			<div className="flex flex-col w-full gap-3">
-				{/* 시간 선택 */}
-				<h2 className="text-2xl mb-2">2. 상담 시간을 선택해주세요.</h2>
-				<p className="text-sm text-gray-500 mb-4">
+				<h2 className="text-lg sm:text-2xl mb-2 font-semibold text-gray-900">
+					2. 상담 시간을 선택해주세요.
+				</h2>
+				<p className="text-sm text-gray-800 md:text-gray-500 font-medium md:font-normal mb-4">
 					상담은 유선으로 진행되며, 약 1시간 소요됩니다.
 				</p>
 
-				<div className="grid grid-cols-3 gap-3 mb-8">
+				<div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
 					{timeSlots.map(({ time, available }) => (
 						<button
 							key={time}
 							disabled={!available}
 							onClick={() => setSelectedTime(time)}
-							className={`rounded-md border-[0.5px] px-4 py-2 text-sm font-medium 
-              ${!available
+							className={`rounded-md border px-4 py-2 text-sm font-medium transition-all
+                ${!available
 									? "text-gray-400 bg-gray-300 cursor-not-allowed"
 									: selectedTime === time
-										? "bg-indigo-100 border-indigo-400 border-[0.5px] text-indigo-600 cursor-pointer"
-										: "border-[0.1px] border-gray-300 cursor-pointer"
+										? "bg-indigo-100 border-indigo-400 text-indigo-600 cursor-pointer"
+										: "border-gray-300 text-gray-800 hover:bg-gray-100"
 								}`}
 						>
 							{time < "12:00" ? `오전 ${time}` : `오후 ${time}`}
@@ -137,7 +145,7 @@ export default function Reservation({ onClose }: ReservationProps) {
 			{/* 선택한 일시 안내 */}
 			{selectedDate && selectedTime && (
 				<div className="border-t pt-4 mb-6">
-					<p className="mb-2">
+					<p className="mb-2 text-gray-900 md:text-gray-700 font-medium md:font-normal">
 						선택하신 상담 일시는{" "}
 						<span className="font-semibold">
 							{formatDate(selectedDate)}{" "}
@@ -145,7 +153,7 @@ export default function Reservation({ onClose }: ReservationProps) {
 						</span>{" "}
 						입니다.
 					</p>
-					<p className="text-sm text-gray-500">
+					<p className="text-sm text-gray-800 md:text-gray-500 font-medium md:font-normal">
 						트레이너가 상담 일시에 맞추어 전화를 드릴 예정입니다.
 					</p>
 				</div>
@@ -155,21 +163,20 @@ export default function Reservation({ onClose }: ReservationProps) {
 			<button
 				onClick={handleReserve}
 				disabled={!selectedDate || !selectedTime}
-				className={`w-full rounded-md py-3 ${selectedDate && selectedTime
-					? "bg-indigo-200 cursor-pointer text-[#2626C3]"
-					: "bg-gray-200 cursor-not-allowed text-gray-500"
+				className={`w-full rounded-md py-3 text-base font-semibold transition-all
+          ${selectedDate && selectedTime
+						? "bg-indigo-200 text-[#2626C3] hover:bg-indigo-300 cursor-pointer"
+						: "bg-gray-200 text-gray-500 cursor-not-allowed"
 					}`}
 			>
 				상담 신청하기
 			</button>
 
-
+			{/* 완료 모달 */}
 			<CustomModal variant={1} isOpen={isModalOpen} onClose={closeModal} width="auto">
 				<div className="bg-white p-6 w-full text-center">
-					<p className="font-semibold text-lg mb-4">
-						전화 상담 신청이 완료되었습니다.
-					</p>
-					<p className="text-sm text-gray-600 mb-4">
+					<p className="font-semibold text-lg mb-4">전화 상담 신청이 완료되었습니다.</p>
+					<p className="text-sm text-gray-700 mb-4">
 						선택하신 일시에 고객님의 연락처로 전화를 드릴 예정입니다.
 						<br />
 						<br />
@@ -185,7 +192,6 @@ export default function Reservation({ onClose }: ReservationProps) {
 					</button>
 				</div>
 			</CustomModal>
-
 		</div>
 	);
 }
