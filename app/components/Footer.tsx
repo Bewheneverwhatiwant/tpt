@@ -33,8 +33,7 @@ export default function Footer() {
 					{footerData.ceo}
 				</p>
 				<p>
-					사업자 등록번호 {footerData.businessNumber} | 통신판매업 신고번호{" "}
-					{footerData.mailOrderNumber}
+					사업자 등록번호 {footerData.businessNumber}
 				</p>
 				<p>
 					주소 {footerData.address} ({footerData.postalCode})
