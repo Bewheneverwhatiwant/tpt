@@ -12,10 +12,10 @@ export default function InvitationCard() {
     <div>
       <h1 className="text-3xl font-serif text-[#B9AB70] mb-6">Invitation Card</h1>
 
-      {/* ✅ 결제 버튼 */}
+      {/* ✅ 결제 버튼 → 모달 열기 */}
       <button
         className="w-full bg-gradient-to-r from-[#D2C693] to-[#928346] text-white rounded-md p-6 mb-6 cursor-pointer"
-        onClick={openPayment}
+        onClick={() => setIsSubModalOpen(true)}
       >
         <h2 className="text-xl font-semibold mb-2">정기 결제 구독하기</h2>
         <p className="text-sm text-white/90 mb-4">
@@ -28,9 +28,14 @@ export default function InvitationCard() {
         <p className="text-2xl font-bold">260,000원/월 갱신</p>
       </button>
 
+      {/* ✅ 모달: 결제 함수 전달 */}
       <SubscribeModal
         isOpen={isSubModalOpen}
         onClose={() => setIsSubModalOpen(false)}
+        onConfirmPayment={() => {
+          setIsSubModalOpen(false);
+          openPayment(); // 모달 닫고 결제 모듈 실행
+        }}
       />
 
       <button
